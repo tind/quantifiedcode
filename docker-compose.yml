@@ -1,0 +1,25 @@
+qc:
+  build: .
+  hostname: qc
+  environment:
+    QC_SETTINGS: /opt/quantifiedcode/quantifiedcode/settings/default.yml
+  links:
+   - db:db
+  ports:
+   - "80:80"
+   - "443:443"
+   - "5000:5000"
+  volumes:
+   - .:/opt/quantifiedcode
+  command: "/opt/quantifiedcode/initiate.sh"
+
+
+db:
+  image: mysql:8
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: password
+
+rabbit:
+  image: rabbitmq:3.6.14
+  restart: always
