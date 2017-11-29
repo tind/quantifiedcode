@@ -15,5 +15,4 @@ pyopenssl==17.2.0
 python-dateutil==2.6.1
 requirements-parser==0.1.0
 -e git://github.com/quantifiedcode/checkmate.git#egg=checkmate
-# FIXME: NEEDED?
-amqp
+redis==2.10.6

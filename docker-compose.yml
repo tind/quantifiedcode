@@ -1,25 +1,44 @@
 qc:
   build: .
-  hostname: qc
+  volumes:
+    - .:/opt/quantifiedcode
   environment:
     QC_SETTINGS: /opt/quantifiedcode/quantifiedcode/settings/default.yml
+
+web:
+  extends:
+    service: qc
+  hostname: web
+  restart: always
   links:
-   - db:db
+    - db:db
+    - redis:redis
   ports:
-   - "80:80"
-   - "443:443"
-   - "5000:5000"
-  volumes:
-   - .:/opt/quantifiedcode
-  command: "/opt/quantifiedcode/initiate.sh"
+    - "80:80"
+    - "443:443"
+    - "5000:5000"
+  command: "bash /opt/quantifiedcode/initiate_web.sh"
+
+celery:
+  extends:
+    service: qc
+  restart: always
+  links:
+    - db:db
+    - redis:redis
+  command: "bash /opt/quantifiedcode/initiate_workers.sh"
 
 
 db:
-  image: mysql:8
+  image: postgres:9.6.6
   restart: always
   environment:
-    MYSQL_ROOT_PASSWORD: password
+    - POSTGRES_USER=qc
+    - POSTGRES_DB=quantified
+    - POSTGRES_PASSWORD=password
 
-rabbit:
-  image: rabbitmq:3.6.14
+redis:
+  image: redis:3
   restart: always
+  ports:
+    - "6379:6379"

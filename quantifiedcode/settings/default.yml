@@ -2,7 +2,7 @@
 backend:
   url: /api
   # by default, we use an in-memory instance of SQLite for testing.
-  db_url: 'sqlite:///qc.sqlite'
+  db_url: 'postgresql://qc:password@db/quantified'
   db_url_test: 'sqlite:///qc_test.sqlite'
   paths:
     repositories: "data/repositories"
@@ -15,8 +15,8 @@ backend:
       timezone: Europe/Oslo
       enable_utc: true
       worker_hijack_root_logger: false
-      broker_url: 'amqp://guest:guest@localhost:5672/'
-      result_backend: 'amqp://guest:guest@localhost:5672/'
+      broker_url: 'amqp://guest:guest@rabbitmq:5672/'
+      result_backend: 'amqp://guest:guest@rabbitmq:5672/'
       task_default_queue: tasks
       task_queues:
         - {name: tasks, routing_key: 'task'}

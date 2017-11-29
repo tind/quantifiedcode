@@ -34,7 +34,7 @@ The installation consists of three parts:
 QuantifiedCode requires the following external dependencies:
 
 * A message broker (required for the background tasks message queue). We recommend either RabbitMQ or Redis.
-* A database (required for the core application). We recommend PostgreSQL, but SQLite is supported as well. Other database systems might work too (e.g. MySQL), but are currently not officially supported. If you need to run QuantifiedCode on a non-supported database, please get in touch with us and we'll be happy to provide you some guidance.
+* A database (required for the core application). We recommend PostgreSQL, but SQLite is supported as well. Other database systems might work too (e.g. MySQL), but are currently not officially supported. If you need to run QuantifiedCode on a non-supported database, please get in touch with us and we'll be happy to provide you some guidance. See http://docs.sqlalchemy.org/en/latest/core/engines.html when editing the config file.
 
 ### Download the QuantifiedCode source code
 
