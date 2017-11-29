@@ -154,7 +154,8 @@ class DiffFileRevisionIssues(Resource, FileRevisionIssueListMixin):
                                      diff_issue_occurrence_table.c.issue_occurrence == issue_occurrence_table.c.pk,
                                      *issue_type_query))\
                        .join(issue_table, issue_table.c.pk == issue_occurrence_table.c.issue)\
-                       .join(issue_classes_cte, issue_classes_cte.c.analyzer_code == issue_table.c.analyzer + ':' + issue_table.c.code)\
+                       .join(issue_classes_cte, issue_classes_cte.c.analyzer_code == issue_table.c.analyzer + ':' + issue_table.c.code) \
+                       .alias('select_table')
 
         #we construct the table we will select issues from
         file_revision_query = select([fr_table.c.pk])\

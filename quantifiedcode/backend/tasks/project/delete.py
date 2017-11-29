@@ -21,6 +21,7 @@ from checkmate.contrib.plugins.git.commands.update_stats import Command as Updat
 from checkmate.management.commands.reset import Command as ResetCommand
 from quantifiedcode.settings import settings, backend
 from quantifiedcode.backend.settings import BACKEND_PATH
+from quantifiedcode.backend.tasks.helpers import ExclusiveTask, TaskLogger
 
 from ...worker import celery
 from ...models import (Project,
@@ -28,6 +29,7 @@ from ...models import (Project,
                        UserRole,
                        IssueClass,
                        ProjectIssueClass)
+from ..project.analyze import analyze_project
 
 @celery.task(queue="analysis", ignore_result=False)
 def delete_project(project_id, task_id=None):

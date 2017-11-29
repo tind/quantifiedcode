@@ -2,10 +2,10 @@
 backend:
   url: /api
   # by default, we use an in-memory instance of SQLite for testing.
-  db_url: 'postgresql://qc:password@db/quantified'
+  db_url: 'postgresql+psycopg2://qc:password@db/quantified'
   db_url_test: 'sqlite:///qc_test.sqlite'
   paths:
-    repositories: "data/repositories"
+    git_repositories: "data/repositories"
     tasks: "data/tasks"
   celery:
     config:
@@ -15,8 +15,8 @@ backend:
       timezone: Europe/Oslo
       enable_utc: true
       worker_hijack_root_logger: false
-      broker_url: 'amqp://guest:guest@rabbitmq:5672/'
-      result_backend: 'amqp://guest:guest@rabbitmq:5672/'
+      broker_url: 'redis://redis:6379/'
+      result_backend: 'redis://redis:6379/'
       task_default_queue: tasks
       task_queues:
         - {name: tasks, routing_key: 'task'}

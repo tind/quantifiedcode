@@ -136,4 +136,5 @@ def configure(app, settings):
 
 if __name__ == '__main__':
     app = get_app(settings)
+    debug = settings.get('debug')
     app.run(debug=debug, host='0.0.0.0', port=8000,threaded = False)

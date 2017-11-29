@@ -106,6 +106,7 @@ class SnapshotFileRevisionIssues(Resource, FileRevisionIssueListMixin):
                        .join(issue_occurrence_table, issue_occurrence_table.c.file_revision == snapshot_file_revisions_table.c.filerevision)\
                        .join(issue_table, and_(issue_table.c.pk == issue_occurrence_table.c.issue, issue_table.c.ignore == ignore) )\
                        .join(issue_classes_cte, issue_classes_cte.c.analyzer_code == issue_table.c.analyzer + ':' + issue_table.c.code)\
+                       .alias('fr_select_table')
 
         #we construct the file revisions query
         file_revisions_query = select([snapshot_file_revisions_table.c.filerevision])\
@@ -124,6 +125,7 @@ class SnapshotFileRevisionIssues(Resource, FileRevisionIssueListMixin):
                        .join(issue_occurrence_table, issue_occurrence_table.c.file_revision == fr_table.c.pk)\
                        .join(issue_table, and_(issue_table.c.pk == issue_occurrence_table.c.issue, issue_table.c.ignore == ignore))\
                        .join(issue_classes_cte, issue_classes_cte.c.analyzer_code == issue_table.c.analyzer + ':' + issue_table.c.code)\
+                       .alias('select_table')
 
 
         #we construct the issues query
