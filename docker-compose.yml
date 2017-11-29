@@ -1,0 +1,44 @@
+qc:
+  build: .
+  volumes:
+    - .:/opt/quantifiedcode
+  environment:
+    QC_SETTINGS: /opt/quantifiedcode/quantifiedcode/settings/default.yml
+
+web:
+  extends:
+    service: qc
+  hostname: web
+  restart: always
+  links:
+    - db:db
+    - redis:redis
+  ports:
+    - "80:80"
+    - "443:443"
+    - "5000:5000"
+  command: "bash /opt/quantifiedcode/initiate_web.sh"
+
+celery:
+  extends:
+    service: qc
+  restart: always
+  links:
+    - db:db
+    - redis:redis
+  command: "bash /opt/quantifiedcode/initiate_workers.sh"
+
+
+db:
+  image: postgres:9.6.6
+  restart: always
+  environment:
+    - POSTGRES_USER=qc
+    - POSTGRES_DB=quantified
+    - POSTGRES_PASSWORD=password
+
+redis:
+  image: redis:3
+  restart: always
+  ports:
+    - "6379:6379"

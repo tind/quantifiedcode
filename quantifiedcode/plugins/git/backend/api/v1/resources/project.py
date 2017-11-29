@@ -79,11 +79,13 @@ class ProjectDetails(Resource):
             'url' : form.url.data
         }
 
-        try:
-            project = create_project(project_data, git_data, user)
-        except DuplicateProject:
-            return ({'message': 'A project with the same name already exists for your account.'},
-                    403)
+        project = create_project(project_data, git_data, user)
+        # FIXME: handle duplicate project exception
+        # try:
+        #     pass
+        # except DuplicateProject:
+        #     return ({'message': 'A project with the same name already exists for your account.'},
+        #             403)
         return ({'message': 'success!',
                  'project': self.export(project)},
                 200)

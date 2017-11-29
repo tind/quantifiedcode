@@ -11,7 +11,9 @@ from __future__ import print_function
 
 from quantifiedcode.settings import settings
 
+from flask import jsonify
 import logging
+import traceback
 logger = logging.getLogger(__name__)
 
 

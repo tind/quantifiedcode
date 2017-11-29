@@ -70,7 +70,7 @@ class TaskLogger(object):
 
     def __enter__(self):
         kwargs = {
-            'filename': os.path.join(settings.get('backend.path'), settings.get('backend.paths.tasks'),
+            'filename': os.path.join(settings.get('project_path'), settings.get('backend.paths.tasks'),
                                      self.task.pk + '.log'),
             'encoding': "utf-8",
             'mode': "w",
@@ -139,10 +139,10 @@ class ExclusiveTask(object):
                     try:
                         res = celery.AsyncResult(task.celery_task_id)
                         with self.backend.transaction():
-                            if res.state == ResultState.Started:
+                            if res.state == self.ResultState.Started:
                                 self.backend.update(task, {'status': 'in_progress'})
                                 return True
-                            elif res.state == ResultState.Pending:
+                            elif res.state == self.ResultState.Pending:
                                 if task.get('last_ping'):
                                     # if we haven't heard from the task in a while, we mark it as failed...
                                     if datetime.datetime.now() - task.last_ping > datetime.timedelta(seconds=60 * 10):
@@ -151,9 +151,9 @@ class ExclusiveTask(object):
                                 elif datetime.datetime.now() - task.created_at < datetime.timedelta(seconds=60 * 20):
                                     self.backend.update(task, {'status': 'in_progress'})
                                     return True
-                            elif res.state == ResultState.Failure:
+                            elif res.state == self.ResultState.Failure:
                                 self.backend.update(task, {'status': 'failed'})
-                            elif res.state == ResultState.Success:
+                            elif res.state == self.ResultState.Success:
                                 self.backend.update(task, {'status': 'succeeded'})
                     except Task.DoesNotExist:
                         # sometimes a task object will get deleted by another worker while

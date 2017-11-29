@@ -22,4 +22,5 @@ celerybeat-schedule
 run.sh
 .idea
 **/settings.yml
-
+src
+quantifiedcode/data

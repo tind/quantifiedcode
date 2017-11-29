@@ -2,9 +2,10 @@
 backend:
   url: /api
   # by default, we use an in-memory instance of SQLite for testing.
-  db_url_test: 'sqlite+pysqlite:///:memory:'
+  db_url: 'postgresql+psycopg2://qc:password@db/quantified'
+  db_url_test: 'sqlite:///qc_test.sqlite'
   paths:
-    repositories: "data/repositories"
+    git_repositories: "data/repositories"
     tasks: "data/tasks"
   celery:
     config:
@@ -14,8 +15,8 @@ backend:
       timezone: Europe/Oslo
       enable_utc: true
       worker_hijack_root_logger: false
-      broker_url: 'amqp://qc:qc@localhost:5672/qc'
-      result_backend: 'amqp://qc:qc@localhost:5672/qc'
+      broker_url: 'redis://redis:6379/'
+      result_backend: 'redis://redis:6379/'
       task_default_queue: tasks
       task_queues:
         - {name: tasks, routing_key: 'task'}
@@ -67,6 +68,7 @@ frontend:
     explore: "/explore"
     project: "/project"
     projects: "/projects"
+url: http://localhost:5000
 render_context:
   # the current_year is added through Python settings#
   # (as this is a dynamic variable)

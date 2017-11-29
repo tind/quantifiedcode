@@ -45,7 +45,7 @@ class PublicProjects(BaseProjects):
         form = PublicProjectsForm(request.args)
 
         if not form.validate():
-            return {'message' : 'please correct the errors mentioned below', errors: form.errors}, 400
+            return {'message' : 'please correct the errors mentioned below', 'errors': form.errors}, 400
 
         data = form.data
 
